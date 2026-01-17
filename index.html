@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neslihan Çelik | Data Analyst & AI Developer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root { --primary: #6366f1; --bg: #020617; }
+    body { font-family: 'Space Grotesk', sans-serif; background-color: var(--bg); color: #f8fafc; overflow-x: hidden; }
+    
+    /* Arka Plan Canvas */
+    #bg-canvas { 
+      position: fixed; 
+      top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      z-index: -1; 
+      background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+    }
+
+    /* Dil Seçici */
+    .lang-switcher { position: fixed; top: 30px; left: 30px; z-index: 100; display: flex; gap: 20px; background: rgba(255,255,255,0.03); padding: 10px 20px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(15px); }
+    .lang-btn { cursor: pointer; position: relative; font-size: 22px; transition: transform 0.3s ease; }
+    .lang-btn::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--primary); transition: width 0.3s ease; }
+    .lang-btn.active::after { width: 100%; }
+
+    /* Profil Fotoğrafı (Apple Style) */
+    .profile-img { width: 180px; height: 180px; border-radius: 45px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .profile-img:hover { transform: scale(1.05); border-color: var(--primary); box-shadow: 0 0 30px rgba(99, 102, 241, 0.2); }
+
+    /* Kartlar */
+    .personal-card { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border-radius: 40px; transition: 0.4s; }
+    .personal-card:hover { border-color: var(--primary); background: rgba(15, 23, 42, 0.5); }
+    
+    /* Ç Harfi ve Başlık Fix */
+    .hero-name-title { line-height: 1.4; padding-bottom: 10px; display: inline-block; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    .platform-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; border-radius: 30px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+    .platform-btn:hover { background: rgba(99, 102, 241, 0.1); transform: translateY(-5px); border-color: var(--primary); }
+
+    .minimal-btn { background: white; color: black; padding: 14px 45px; border-radius: 100px; font-weight: 600; transition: 0.3s; border: 1px solid white; cursor: pointer; }
+    .minimal-btn:hover { background: transparent; color: white; transform: scale(1.05); }
+  </style>
+</head>
+<body>
+
+  <div class="lang-switcher">
+    <span class="lang-btn active" id="btn-tr" onclick="setLanguage('tr')">🇹🇷</span>
+    <span class="lang-btn" id="btn-en" onclick="setLanguage('en')">🇬🇧</span>
+    <span class="lang-btn" id="btn-ru" onclick="setLanguage('ru')">🇷🇺</span>
+  </div>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <main class="max-w-4xl mx-auto px-6 py-20">
+    
+    <section class="reveal text-center mb-16">
+      <div class="relative inline-block mb-10">
+        <div class="absolute inset-0 bg-indigo-600 rounded-[50px] blur-[100px] opacity-20"></div>
+        <img src="img/profil.png" alt="Neslihan Çelik" class="relative profile-img shadow-2xl"/>
+      </div>
+      
+      <div class="block">
+        <h1 class="text-5xl md:text-6xl font-bold tracking-tight hero-name-title" id="hero-name">
+          Neslihan Çelik
+        </h1>
+      </div>
+      
+      <p class="text-lg md:text-xl text-slate-400 font-light max-w-2xl mx-auto mb-8" id="hero-title">
+        Veri ve Yapay Zeka ile Geleceği İnşa Ediyoruz.
+      </p>
+
+      <div class="flex justify-center">
+        <a href="CVNesCelik.pdf" target="_blank" class="flex items-center gap-2 px-8 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition text-sm font-medium">
+          <span id="cv-view">CV Görüntüle</span> 👁️
+        </a>
+      </div>
+    </section>
+
+    <section class="reveal personal-card p-10 md:p-14 mb-10">
+      <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+        <span>✨</span> <span id="about-heading">Hakkımda</span>
+      </h2>
+      <div class="space-y-6 text-slate-300 text-lg leading-relaxed" id="about-text">
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div class="reveal personal-card p-8">
+        <span class="text-4xl mb-4 block">📊</span>
+        <h3 class="text-xl font-bold mb-3" id="skill-1-title">Veri Analizi</h3>
+        <p class="text-slate-500 text-sm" id="skill-1-desc">Büyük veri setlerinden anlamlı içgörüler ve stratejik modelleme.</p>
+      </div>
+      <div class="reveal personal-card p-8">
+        <span class="text-4xl mb-4 block">🧠</span>
+        <h3 class="text-xl font-bold mb-3" id="skill-2-title">AI & Yazılım</h3>
+        <p class="text-slate-500 text-sm" id="skill-2-desc">Machine Learning çözümleri ve akıllı web uygulamaları.</p>
+      </div>
+    </div>
+
+    <section class="reveal mb-20">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="#" class="platform-btn"> <span class="text-3xl">📝</span> <span class="text-xs font-bold uppercase tracking-widest">Medium</span> </a>
+        <a href="#" class="platform-btn"> <span class="text-3xl">📊</span> <span class="text-xs font-bold uppercase tracking-widest">Kaggle</span> </a>
+        <a href="#" class="platform-btn"> <span class="text-3xl">🛠️</span> <span class="text-xs font-bold uppercase tracking-widest">GitHub</span> </a>
+        <a href="#" class="platform-btn"> <span class="text-3xl">🔗</span> <span class="text-xs font-bold uppercase tracking-widest">LinkedIn</span> </a>
+      </div>
+    </section>
+
+    <section class="reveal text-center">
+      <h2 class="text-3xl font-bold mb-10" id="contact-heading">Birlikte Çalışalım</h2>
+      <button onclick="window.location.href='mailto:nescelik96@gmail.com'" class="minimal-btn">
+        <span id="contact-btn">İletişime Geç</span>
+      </button>
+    </section>
+
+    <footer class="pt-24 pb-10 text-center text-slate-800 text-[10px] tracking-[0.2em]" id="footer-text">
+      © 2026 NESLIHAN CELIK. DATA & AI.
+    </footer>
+  </main>
+
+  <script>
+    const translations = {
+      tr: {
+        heroTitle: "Veri ve Yapay Zeka ile Geleceği İnşa Ediyoruz.",
+        aboutHeading: "Hakkımda",
+        aboutText: `<p>Londra'dan St. Petersburg'a uzanan yolculuğumda, verinin sadece sayılardan ibaret olmadığını, her veri setinin anlatılmayı bekleyen bir <strong class='text-white'>hikayesi</strong> olduğunu keşfettim.</p>
+                    <p>Yandex gibi teknoloji devlerinde arama algoritmaları ve veri kalitesi üzerine çalışırken, karmaşık sistemlerin içindeki <strong class='text-white'>stratejik kalıpları</strong> bulma konusunda uzmanlaştım.</p>
+                    <p>Bugün, modern AI mimarilerini ve analitik yaklaşımları birleştirerek; veriyi <strong class='text-white'>somut bir değere</strong> dönüştürmek benim temel motivasyonumdur.</p>`,
+        skill1Title: "Veri Analizi",
+        skill1Desc: "Büyük veri setlerinden anlamlı içgörüler ve stratejik modelleme.",
+        skill2Title: "AI & Yazılım",
+        skill2Desc: "Machine Learning çözümleri ve akıllı web uygulamaları.",
+        cvView: "CV Görüntüle",
+        contactHeading: "Birlikte Çalışalım",
+        contactBtn: "İletişime Geç",
+        footer: "© 2026 NESLIHAN CELIK. DATA & AI."
+      },
+      en: {
+        heroTitle: "Building the Future with Data and AI.",
+        aboutHeading: "About Me",
+        aboutText: `<p>In my career journey from London to St. Petersburg, I discovered that data is not just about numbers; every dataset has a <strong class='text-white'>story</strong> waiting to be told.</p>
+                    <p>While working on search algorithms and data quality at tech giants like Yandex, I specialized in identifying <strong class='text-white'>strategic patterns</strong> within complex systems.</p>
+                    <p>Today, I combine modern AI architectures with analytical approaches to transform data into <strong class='text-white'>tangible value</strong>.</p>`,
+        skill1Title: "Data Analytics",
+        skill1Desc: "Meaningful insights from big data and strategic modeling.",
+        skill2Title: "AI & Software",
+        skill2Desc: "Machine Learning solutions and intelligent web applications.",
+        cvView: "View CV",
+        contactHeading: "Let's Work Together",
+        contactBtn: "Contact Me",
+        footer: "© 2026 NESLIHAN CELIK. DATA & AI."
+      },
+      ru: {
+        heroTitle: "Создаем будущее с помощью данных и ИИ.",
+        aboutHeading: "Обо мне",
+        aboutText: `<p>На моем пути от Лондона до Санкт-Петербурга я поняла, что данные — это не просто цифры; у каждого набора данных есть своя <strong class='text-white'>история</strong>.</p>
+                    <p>Работая над алгоритмами поиска и качеством данных в таких гигантах, как Яндекс, я специализировалась на поиске <strong class='text-white'>стратегических закономерностей</strong>.</p>
+                    <p>Сегодня я объединяю современные архитектуры ИИ с аналитическими подходами, чтобы превращать данные в <strong class='text-white'>реальную ценность</strong>.</p>`,
+        skill1Title: "Анализ данных",
+        skill1Desc: "Инсайты из Big Data и стратегическое моделирование.",
+        skill2Title: "AI и Разработка",
+        skill2Desc: "Решения Machine Learning и умные веб-приложения.",
+        cvView: "Посмотреть CV",
+        contactHeading: "Давайте сотрудничать",
+        contactBtn: "Связаться со мной",
+        footer: "© 2026 НЕСЛИХАН ЧЕЛИК. DATA & AI."
+      }
+    };
+
+    function setLanguage(lang) {
+      localStorage.setItem('prefLang', lang);
+      const t = translations[lang];
+      document.getElementById('hero-title').innerText = t.heroTitle;
+      document.getElementById('about-heading').innerText = t.aboutHeading;
+      document.getElementById('about-text').innerHTML = t.aboutText;
+      document.getElementById('skill-1-title').innerText = t.skill1Title;
+      document.getElementById('skill-1-desc').innerText = t.skill1Desc;
+      document.getElementById('skill-2-title').innerText = t.skill2Title;
+      document.getElementById('skill-2-desc').innerText = t.skill2Desc;
+      document.getElementById('cv-view').innerText = t.cvView;
+      document.getElementById('contact-heading').innerText = t.contactHeading;
+      document.getElementById('contact-btn').innerText = t.contactBtn;
+      document.getElementById('footer-text').innerText = t.footer;
+
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + lang).classList.add('active');
+    }
+
+    // --- ARKA PLAN ANİMASYONU (GELİŞTİRİLMİŞ) ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const mouse = { x: null, y: null, radius: 150 };
+
+    window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x > canvas.width || this.x < 0) this.vx *= -1;
+        if (this.y > canvas.height || this.y < 0) this.vy *= -1;
+
+        // Fare etkileşimi
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx*dx + dy*dy);
+        if (distance < mouse.radius) {
+          if (mouse.x < this.x && this.x < canvas.width - 10) this.x += 2;
+          if (mouse.x > this.x && this.x > 10) this.x -= 2;
+          if (mouse.y < this.y && this.y < canvas.height - 10) this.y += 2;
+          if (mouse.y > this.y && this.y > 10) this.y -= 2;
+        }
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(99, 102, 241, 0.8)';
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+
+    function init() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = [];
+      let count = (canvas.width * canvas.height) / 9000;
+      for (let i = 0; i < count; i++) particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        for (let j = i; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let distance = Math.sqrt(dx*dx + dy*dy);
+          if (distance < 150) {
+            ctx.strokeStyle = `rgba(99, 102, 241, ${1 - distance/150})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('prefLang');
+      const browser = navigator.language.split('-')[0];
+      setLanguage(saved || (translations[browser] ? browser : 'en'));
+      init(); animate();
+    };
+    window.addEventListener('resize', init);
+
+    const observer = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('active')), {threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
